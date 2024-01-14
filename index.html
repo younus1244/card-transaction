@@ -78,10 +78,10 @@
         <span style="color: red;">${education}</span>
       `;
 
-            const blob = new Blob([cvContent], { type: 'text/pdf' });
+            const blob = new Blob([cvContent], { type: 'image/png' });
             const link = document.createElement('a');
             link.href = window.URL.createObjectURL(blob);
-            link.download = 'CV.pdf';
+            link.download = 'CV.png';
             link.click();
         }
     </script>
