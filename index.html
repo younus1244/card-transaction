@@ -32,7 +32,6 @@
             cursor: pointer;
         }
     </style>
-    
 </head>
 
 <body>
@@ -57,7 +56,7 @@
     <button onclick="downloadCV()">Download CV</button>
 
     <script>
-        async function downloadCV() {
+        function downloadCV() {
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const bio = document.getElementById('bio').value;
@@ -65,26 +64,24 @@
             const education = document.getElementById('education').value;
 
             const cvContent = `
-            Name: ${name}
-            
-            Email: ${email}
+        Name: ${name}
+        
+        Email: ${email}
 
-            Bio:
-            ${bio}
+        Bio:
+        ${bio}
 
-            Experience:
-            ${experience}
+        Experience:
+        ${experience}
 
-            Education:
-            ${education}
-        `;
+        Education:
+        ${education}
+      `;
 
-           
-
-            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+            const blob = new Blob([cvContent], { type: 'text/plain' });
             const link = document.createElement('a');
             link.href = window.URL.createObjectURL(blob);
-            link.download = 'CV.pdf';
+            link.download = 'CV.txt';
             link.click();
         }
     </script>
