@@ -60,55 +60,51 @@
 
     <button onclick="downloadCV()">Download CV</button>
 
-    <script>
-        async function downloadCV() {
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const bio = document.getElementById('bio').value;
-            const experience = document.getElementById('experience').value;
-            const education = document.getElementById('education').value;
-            const password = document.getElementById('password').value;
+    
+        <script>
+    async function downloadCV() {
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const bio = document.getElementById('bio').value;
+        const experience = document.getElementById('experience').value;
+        const education = document.getElementById('education').value;
+        const password = document.getElementById('password').value;
 
-            const cvContent = `
-        Name: ${name}
-        
-        Email: ${email}
+        const cvContent = `
+            Name: ${name}
+            
+            Email: ${email}
 
-        Bio:
-        ${bio}
+            Bio:
+            ${bio}
 
-        Experience:
-        ${experience}
+            Experience:
+            ${experience}
 
-        Education:
-        ${education}
-      `;
+            Education:
+            ${education}
+        `;
 
-            const pdfDoc = await PDFLib.PDFDocument.create();
-            const page = pdfDoc.addPage([400, 400]);
-            const { width, height } = page.getSize();
+        const pdfDoc = await PDFLib.PDFDocument.create();
+        const page = pdfDoc.addPage([400, 400]);
+        const { width, height } = page.getSize();
 
-            page.drawText(cvContent, { x: 10, y: height - 50, font: await PDFLib.Font.HelveticaBold });
+        page.drawText(cvContent, { x: 10, y: height - 50, font: await PDFLib.Font.HelveticaBold });
 
-            const pdfBytes = await pdfDoc.save();
+        const pdfBytes = await pdfDoc.save();
 
-            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-            const link = document.createElement('a');
-            link.href = window.URL.createObjectURL(blob);
-            link.download = 'CV.pdf';
+        // Encrypt the PDF with a password
+        const encryptedBytes = await PDFLib.PDFDocument.load(pdfBytes)
+            .then((doc) => doc.setPassword({ password }))
+            .then((doc) => doc.save());
 
-            // Encrypt the PDF with a password
-            const passwordOptions = { password };
-            await PDFLib.PDFDocument.load(pdfBytes)
-                .then((doc) => doc.setPassword(passwordOptions))
-                .then((doc) => doc.save())
-                .then((encryptedBytes) => {
-                    const encryptedBlob = new Blob([encryptedBytes], { type: 'application/pdf' });
-                    link.href = window.URL.createObjectURL(encryptedBlob);
-                });
+        const encryptedBlob = new Blob([encryptedBytes], { type: 'application/pdf' });
 
-            link.click();
-        }
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(encryptedBlob);
+        link.download = 'CV.pdf';
+        link.click();
+    }
     </script>
 
 </body>
