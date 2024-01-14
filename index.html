@@ -55,8 +55,9 @@
 
     <button onclick="downloadCV()">Download CV</button>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.16.0/pdf-lib.min.js"></script>
     <script>
-        function downloadCV() {
+        async function downloadCV() {
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const bio = document.getElementById('bio').value;
@@ -64,24 +65,40 @@
             const education = document.getElementById('education').value;
 
             const cvContent = `
-        Name: ${name}
-        
-        Email: ${email}
+            Name: ${name}
+            
+            Email: ${email}
 
-        Bio:
-        ${bio}
+            Bio:
+            ${bio}
 
-        Experience:
-        ${experience}
+            Experience:
+            ${experience}
 
-        Education:
-        ${education}
-      `;
+            Education:
+            ${education}
+        `;
 
-            const blob = new Blob([cvContent], { type: 'text/plain' });
+            const pdfDoc = await PDFLib.PDFDocument.create();
+            const page = pdfDoc.addPage([400, 400]);
+            const { width, height } = page.getSize();
+
+            const textOptions = {
+                x: 10,
+                y: height - 50,
+                font: await PDFLib.Font.HelveticaBold,
+                size: 12,
+                color: PDFLib.rgb(0, 0, 255), // Set text color to blue
+            };
+
+            page.drawText(cvContent, textOptions);
+
+            const pdfBytes = await pdfDoc.save();
+
+            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
             const link = document.createElement('a');
             link.href = window.URL.createObjectURL(blob);
-            link.download = 'CV.txt';
+            link.download = 'CV.pdf';
             link.click();
         }
     </script>
