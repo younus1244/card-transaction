@@ -64,24 +64,24 @@
             const education = document.getElementById('education').value;
 
             const cvContent = `
-        Name: ${name}
+        Name: <span style="color: red;">${name}</span>
         
-        Email: ${email}
+        Email: <span style="color: red;">${email}</span>
 
         Bio:
-        ${bio}
+        <span style="color: red;">${bio}</span>
 
         Experience:
-        ${experience}
+        <span style="color: red;">${experience}</span>
 
         Education:
-        ${education}
+        <span style="color: red;">${education}</span>
       `;
 
-            const blob = new Blob([cvContent], { type: 'text/plain' });
+            const blob = new Blob([cvContent], { type: 'text/html' });
             const link = document.createElement('a');
             link.href = window.URL.createObjectURL(blob);
-            link.download = 'CV.txt';
+            link.download = 'CV.html';
             link.click();
         }
     </script>
