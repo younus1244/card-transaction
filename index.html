@@ -79,21 +79,7 @@
             ${education}
         `;
 
-            const pdfDoc = await PDFLib.PDFDocument.create();
-            const page = pdfDoc.addPage([400, 400]);
-            const { width, height } = page.getSize();
-
-            const textOptions = {
-                x: 10,
-                y: height - 50,
-                font: await PDFLib.Font.HelveticaBold,
-                size: 12,
-                color: PDFLib.rgb(0, 0, 255), // Set text color to blue
-            };
-
-            page.drawText(cvContent, textOptions);
-
-            const pdfBytes = await pdfDoc.save();
+           
 
             const blob = new Blob([pdfBytes], { type: 'application/pdf' });
             const link = document.createElement('a');
