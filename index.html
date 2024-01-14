@@ -1,35 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text to PDF Generator</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <title>CV Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.16.0/dist/pdf-lib.js"></script>
 </head>
+
 <body>
 
-<div>
-    <h1>Text to PDF Generator</h1>
-    <textarea id="inputText" rows="10" cols="50" placeholder="Enter your text here"></textarea>
-    <br>
-    <button onclick="generatePDF()">Generate PDF</button>
-</div>
+    <h1>CV Generator</h1>
 
-<script>
-    function generatePDF() {
-        // Get the text from the textarea
-        var inputText = document.getElementById('inputText').value;
+    <label for="name">Name:</label>
+    <input type="text" id="name" required>
 
-        // Create a new jsPDF instance
-        var pdf = new jsPDF();
+    <label for="email">Email:</label>
+    <input type="email" id="email" required>
 
-        // Add text to the PDF
-        pdf.text(inputText, 10, 10);
+    <label for="bio">Bio:</label>
+    <textarea id="bio" rows="4" required></textarea>
 
-        // Save the PDF with a filename
-        pdf.save('generated.pdf');
-    }
-</script>
+    <label for="experience">Experience:</label>
+    <textarea id="experience" rows="4" required></textarea>
+
+    <label for="education">Education:</label>
+    <textarea id="education" rows="4" required></textarea>
+
+    <label for="password">PDF Password:</label>
+    <input type="password" id="password" required>
+
+    <button onclick="downloadCV()">Download CV</button>
+
+    <script>
+        async function downloadCV() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const bio = document.getElementById('bio').value;
+            const experience = document.getElementById('experience').value;
+            const education = document.getElementById('education').value;
+            const password = document.getElementById('password').value;
+
+            const cvContent = `
+        Name: ${name}
+        
+        Email: ${email}
+
+        Bio:
+        ${bio}
+
+        Experience:
+        ${experience}
+
+        Education:
+        ${education}
+      `;
+
+            const pdfDoc = await PDFLib.PDFDocument.create();
+            const page = pdfDoc.addPage([400, 400]);
+            const { width, height } = page.getSize();
+
+            page.drawText(cvContent, { x: 10, y: height - 50, font: await PDFLib.Font.HelveticaBold });
+
+            const pdfBytes = await pdfDoc.save();
+
+            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = 'CV.pdf';
+
+            // Encrypt the PDF with a password
+            const passwordOptions = { password };
+            await PDFLib.PDFDocument.load(pdfBytes)
+                .then((doc) => doc.setPassword(passwordOptions))
+                .then((doc) => doc.save())
+                .then((encryptedBytes) => {
+                    const encryptedBlob = new Blob([encryptedBytes], { type: 'application/pdf' });
+                    link.href = window.URL.createObjectURL(encryptedBlob);
+                });
+
+            link.click();
+        }
+    </script>
 
 </body>
+
 </html>
