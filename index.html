@@ -32,6 +32,7 @@
             cursor: pointer;
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.16.0/dist/pdf-lib.min.js"></script>
 </head>
 
 <body>
@@ -55,7 +56,6 @@
 
     <button onclick="downloadCV()">Download CV</button>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.16.0/pdf-lib.min.js"></script>
     <script>
         async function downloadCV() {
             const name = document.getElementById('name').value;
