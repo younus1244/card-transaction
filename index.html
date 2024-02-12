@@ -14,7 +14,7 @@
       margin: 0;
     }
 
-    #surprise-form, #surprise-section, #gift-section, #address-section {
+    .section {
       display: none;
       text-align: center;
       padding: 20px;
@@ -35,7 +35,7 @@
 </head>
 <body>
 
-  <form id="surprise-form">
+  <div id="surprise-form" class="section">
     <label for="name">Name:</label>
     <input type="text" id="name" name="name" required>
     <br>
@@ -48,23 +48,23 @@
     <label for="message">Surprise Message:</label>
     <textarea id="message" name="message" rows="4" required></textarea>
     <br>
-    <button type="button" onclick="showSurpriseSection()">Submit</button>
-  </form>
-
-  <div id="surprise-section">
-    <h2>Welcome to the Surprise Section!</h2>
-    <p>Click the box to reveal your gifts!</p>
-    <button onclick="showGifts()">Open Box</button>
+    <button type="button" onclick="showSection('surprise-section')">Submit</button>
   </div>
 
-  <div id="gift-section">
+  <div id="surprise-section" class="section">
+    <h2>Welcome to the Surprise Section!</h2>
+    <p>Click the box to reveal your gifts!</p>
+    <button onclick="showSection('gift-section')">Open Box</button>
+  </div>
+
+  <div id="gift-section" class="section">
     <h2>🎁 Gifts 🎁</h2>
     <p>Here are your surprise gifts!</p>
     <!-- Add your gift items here -->
-    <button onclick="showAddressSection()">Next</button>
+    <button onclick="showSection('address-section')">Next</button>
   </div>
 
-  <div id="address-section">
+  <div id="address-section" class="section">
     <h2>Home Address</h2>
     <label for="address">Enter your home address:</label>
     <textarea id="address" name="address" rows="4" required></textarea>
@@ -73,28 +73,14 @@
   </div>
 
   <script>
-    function showSurpriseSection() {
-      const form = document.getElementById('surprise-form');
-      const surpriseSection = document.getElementById('surprise-section');
+    function showSection(sectionId) {
+      const sections = document.querySelectorAll('.section');
+      sections.forEach(section => {
+        section.style.display = 'none';
+      });
 
-      form.style.display = 'none';
-      surpriseSection.style.display = 'block';
-    }
-
-    function showGifts() {
-      const surpriseSection = document.getElementById('surprise-section');
-      const giftSection = document.getElementById('gift-section');
-
-      surpriseSection.style.display = 'none';
-      giftSection.style.display = 'block';
-    }
-
-    function showAddressSection() {
-      const giftSection = document.getElementById('gift-section');
-      const addressSection = document.getElementById('address-section');
-
-      giftSection.style.display = 'none';
-      addressSection.style.display = 'block';
+      const currentSection = document.getElementById(sectionId);
+      currentSection.style.display = 'block';
     }
 
     function shareOnWhatsApp() {
@@ -109,5 +95,4 @@
   </script>
 
 </body>
-  </html>
-      
+</html>
