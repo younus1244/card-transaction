@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Surprise Box</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    #surprise-form, #surprise-section, #gift-section, #address-section {
+      display: none;
+      text-align: center;
+      padding: 20px;
+      border: 2px solid #333;
+      border-radius: 10px;
+      background-color: #f0f0f0;
+    }
+
+    #share-btn {
+      background-color: #4caf50;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <form id="surprise-form">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+    <br>
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
+    <br>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required>
+    <br>
+    <label for="message">Surprise Message:</label>
+    <textarea id="message" name="message" rows="4" required></textarea>
+    <br>
+    <button type="button" onclick="showSurpriseSection()">Submit</button>
+  </form>
+
+  <div id="surprise-section">
+    <h2>Welcome to the Surprise Section!</h2>
+    <p>Click the box to reveal your gifts!</p>
+    <button onclick="showGifts()">Open Box</button>
+  </div>
+
+  <div id="gift-section">
+    <h2>🎁 Gifts 🎁</h2>
+    <p>Here are your surprise gifts!</p>
+    <!-- Add your gift items here -->
+    <button onclick="showAddressSection()">Next</button>
+  </div>
+
+  <div id="address-section">
+    <h2>Home Address</h2>
+    <label for="address">Enter your home address:</label>
+    <textarea id="address" name="address" rows="4" required></textarea>
+    <br>
+    <button onclick="shareOnWhatsApp()">Share on WhatsApp</button>
+  </div>
+
+  <script>
+    function showSurpriseSection() {
+      const form = document.getElementById('surprise-form');
+      const surpriseSection = document.getElementById('surprise-section');
+
+      form.style.display = 'none';
+      surpriseSection.style.display = 'block';
+    }
+
+    function showGifts() {
+      const surpriseSection = document.getElementById('surprise-section');
+      const giftSection = document.getElementById('gift-section');
+
+      surpriseSection.style.display = 'none';
+      giftSection.style.display = 'block';
+    }
+
+    function showAddressSection() {
+      const giftSection = document.getElementById('gift-section');
+      const addressSection = document.getElementById('address-section');
+
+      giftSection.style.display = 'none';
+      addressSection.style.display = 'block';
+    }
+
+    function shareOnWhatsApp() {
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const address = document.getElementById('address').value;
+      const message = `Dear ${name}, your gifts are on the way! Address: ${address}`;
+
+      const shareLink = `whatsapp://send?text=${encodeURIComponent(message)}`;
+      window.location.href = shareLink;
+    }
+  </script>
+
+</body>
+  </html>
+      
